@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<VerticalStackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     x:Class="MauiExtension.SimpleSearchPicker.SearchPicker"
+                     xmlns:local="clr-namespace:MauiExtension.SimpleSearchPicker"
+                     ZIndex="2"
+                     x:Name="this"
+                     Unfocused="SetFocus"
+                     Focused="SetFocus">
+    <VerticalStackLayout.Resources>
+        <local:InvertBoolConverter x:Key="invertBoolConverter" />
+        <local:SelectedItemConverter x:Key="selectedItemConverter" />
+    </VerticalStackLayout.Resources>
+    <Grid>
+        <Label IsVisible="{Binding Source={x:Reference this}, Path=IsFocused, Converter={StaticResource invertBoolConverter}}"
+               Text="{Binding Source={x:Reference this}, Path=SelectedItem, Converter={StaticResource selectedItemConverter}}"
+               TextColor="{Binding Source={x:Reference this}, Path=SecondaryTextColor}"
+               VerticalTextAlignment="Center"
+               Padding="11,0,0,5"
+               InputTransparent="True" />
+        <Entry x:Name="searchField"
+               Focused="SetFocus"
+               Unfocused="SetFocus"
+               Text="{Binding Source={x:Reference this}, Path=SearchWord}" 
+               TextColor="{Binding Source={x:Reference this}, Path=TextColor}" />
+        
+    </Grid>
+
+    <AbsoluteLayout HeightRequest="1"
+                    Margin="0,2,0,0">
+        <Border Stroke="Transparent"
+                x:Name="menu"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle, 5"
+                AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+                AbsoluteLayout.LayoutBounds="0,0,1,-1"
+                MaximumHeightRequest="200"
+                BackgroundColor="{Binding Source={x:Reference this}, Path=BackgroundColor}">
+            <ScrollView>
+                <VerticalStackLayout>
+                    <Label Text="--select--"
+                           Padding="4"
+                           TextColor="{Binding Source={x:Reference this}, Path=TextColor}">
+                        <Label.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
+                                                      PointerExited="DataItem_PointerExited" />
+                            <TapGestureRecognizer Tapped="DataItem_Tapped"
+                                                  CommandParameter="{x:Null}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <VerticalStackLayout x:Name="bindingStack">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type local:IStringPresentable}">
+                                <Label Text="{Binding VisibleData}"
+                                       Padding="4"
+                                       TextColor="{Binding Source={x:Reference this}, Path=TextColor}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
+                                                                  PointerExited="DataItem_PointerExited" />
+                                        <TapGestureRecognizer Tapped="DataItem_Tapped"
+                                                              CommandParameter="{Binding .}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+    </AbsoluteLayout>
+</VerticalStackLayout>
