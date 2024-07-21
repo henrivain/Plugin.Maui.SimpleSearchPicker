@@ -34,7 +34,7 @@
                 StrokeShape="RoundRectangle, 5"
                 AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
                 AbsoluteLayout.LayoutBounds="0,0,1,-1"
-                MaximumHeightRequest="200"
+                MaximumHeightRequest="{Binding Source={x:Reference this}, Path=DropdownMaxHeight}"
                 BackgroundColor="{Binding Source={x:Reference this}, Path=BackgroundColor}">
             <ScrollView>
                 <VerticalStackLayout>

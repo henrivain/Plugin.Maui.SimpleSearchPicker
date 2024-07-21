@@ -23,7 +23,9 @@
                    SemanticProperties.HeadingLevel="Level2"
                    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
-            <ui:SearchPicker x:Name="searchPicker" BackgroundColor="Red" TextColor="Yellow" SecondaryTextColor="Green" HoverBackgroundColor="Orange"/>
+            <ui:SearchPicker x:Name="searchPicker" BackgroundColor="Red" TextColor="Yellow" SecondaryTextColor="Green" HoverBackgroundColor="Orange"
+                             
+                             DropdownMaxHeight="200"/>
 
             <Button></Button>
         </VerticalStackLayout>

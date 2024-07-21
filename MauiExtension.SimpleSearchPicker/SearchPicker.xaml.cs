@@ -66,6 +66,12 @@ public partial class SearchPicker : VerticalStackLayout
         get => (MauiColor)GetValue(SecondaryTextColorProperty);
         set => SetValue(SecondaryTextColorProperty, value);
     }
+    
+    public double DropdownMaxHeight
+    {
+        get => (double)GetValue(DropdownMaxHeightProperty);
+        set => SetValue(DropdownMaxHeightProperty, value);
+    }
 
    
 
@@ -82,8 +88,7 @@ public partial class SearchPicker : VerticalStackLayout
 
 
 
-
-    private void Filter()
+    public void Filter()
     {
         /* Filter is not ran if IsFocused is false, 
          * Filter is always called after IsFocused is true
@@ -143,14 +148,14 @@ public partial class SearchPicker : VerticalStackLayout
         if (e.IsFocused)
         {
             Filter();
-            new Animation(value => { menu.MaximumHeightRequest = value; }, 0, 200)
+            new Animation(value => { menu.MaximumHeightRequest = value; }, 0, DropdownMaxHeight)
                 .Commit(menu, "menuOpening", length: 200, easing: Easing.CubicIn);
         }
         else
         {
             searchField.Unfocus();
             SearchWord = string.Empty;
-            new Animation(value => { menu.MaximumHeightRequest = value; }, 200, 0)
+            new Animation(value => { menu.MaximumHeightRequest = value; }, DropdownMaxHeight, 0)
                 .Commit(menu, "menuClosing", length: 200, easing: Easing.CubicIn);
         }
     }
@@ -209,5 +214,8 @@ public partial class SearchPicker : VerticalStackLayout
 
     public static readonly BindableProperty SecondaryTextColorProperty = BindableProperty.Create(
         nameof(SecondaryTextColor), typeof(MauiColor), typeof(SearchPicker), ResourceProvider.GetColorOrNull("Gray500"), BindingMode.OneWay);
+    
+    public static readonly BindableProperty DropdownMaxHeightProperty = BindableProperty.Create(
+        nameof(DropdownMaxHeight), typeof(double), typeof(SearchPicker), 200d, BindingMode.OneWay);
 
 }
