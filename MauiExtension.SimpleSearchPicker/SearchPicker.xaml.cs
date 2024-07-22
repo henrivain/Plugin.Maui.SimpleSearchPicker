@@ -7,9 +7,21 @@ namespace MauiExtension.SimpleSearchPicker;
 public partial class SearchPicker : VerticalStackLayout
 {
     string _searchWord = string.Empty;
+    CooldownTimer _timer = new(200);
 
     public SearchPicker()
     {
+        PropertyChanged += async (sender, e) =>
+        {
+            if (e.PropertyName is nameof(SearchWord))
+            {
+                if (await _timer.WaitIsCooldownOverAsync())
+                {
+                    Filter();
+                }
+            }
+        };
+        
         InitializeComponent();
         SetFocus(this, new FocusEventArgs(this, IsFocused));
         BindableLayout.SetItemsSource(bindingStack, VisibleItems);
@@ -33,7 +45,7 @@ public partial class SearchPicker : VerticalStackLayout
         set => SetValue(SelectedItemProperty, value);
     }
 
-    public int MaxVisibleItemCount { get; set; } = -1;
+    public int MaxVisibleItemCount { get; set; } = 30;  // -1 means not limited 
 
     ObservableCollection<IStringPresentable> VisibleItems { get; } = [];
 
@@ -61,19 +73,23 @@ public partial class SearchPicker : VerticalStackLayout
         set => SetValue(TextColorProperty, value);
     }
 
+    public MauiColor DataItemTextColor
+    {
+        get => (MauiColor)GetValue(DataItemTextColorProperty);
+        set => SetValue(DataItemTextColorProperty, value);
+    }
+
     public MauiColor SecondaryTextColor
     {
         get => (MauiColor)GetValue(SecondaryTextColorProperty);
         set => SetValue(SecondaryTextColorProperty, value);
     }
-    
+
     public double DropdownMaxHeight
     {
         get => (double)GetValue(DropdownMaxHeightProperty);
         set => SetValue(DropdownMaxHeightProperty, value);
     }
-
-   
 
     public string SearchWord
     {
@@ -81,8 +97,8 @@ public partial class SearchPicker : VerticalStackLayout
         set
         {
             _searchWord = value;
-            OnPropertyChanged();
-            Filter();
+            // Filter is run in PropertyChanged in ctor
+            OnPropertyChanged();    
         }
     }
 
@@ -102,7 +118,7 @@ public partial class SearchPicker : VerticalStackLayout
         {
             return;
         }
-
+       
         VisibleItems.Clear();
         if (string.IsNullOrWhiteSpace(SearchWord))
         {
@@ -130,14 +146,17 @@ public partial class SearchPicker : VerticalStackLayout
             }
         }
 
-
         bool IsVisibleLimitReached()
         {
-            return MaxVisibleItemCount > 0 && MaxVisibleItemCount >= VisibleItems.Count;
+            return MaxVisibleItemCount > 0 && VisibleItems.Count >= MaxVisibleItemCount;
         }
     }
 
-
+    public void SetCooldownTimerDelay(int delay_ms)
+    {
+        _timer = new(delay_ms);
+        Filter();   // Refilters to be sure with user input
+    }
 
 
     private void SetFocus(object? sender, FocusEventArgs e)
@@ -158,6 +177,8 @@ public partial class SearchPicker : VerticalStackLayout
             new Animation(value => { menu.MaximumHeightRequest = value; }, DropdownMaxHeight, 0)
                 .Commit(menu, "menuClosing", length: 200, easing: Easing.CubicIn);
         }
+
+        IsFocusedChanged?.Invoke(this, e);
     }
 
     private void DataItem_PointerEntered(object sender, PointerEventArgs e)
@@ -176,21 +197,25 @@ public partial class SearchPicker : VerticalStackLayout
         }
     }
 
+
+
     private void DataItem_Tapped(object sender, TappedEventArgs e)
     {
         if (e.Parameter is null or IStringPresentable)
         {
             SelectedItem = (IStringPresentable?)e.Parameter;
-            Unfocus();
+            // If Unfocus is called on Android, SetFocus is not called
+            SetFocus(this, new(this, false));
             SelectedItemChanged?.Invoke(this, SelectedItem);
             return;
         }
         throw new UnreachableException("Mismatched data type, this exception should never be thrown.");
     }
 
-
-
     public event EventHandler<IStringPresentable?>? SelectedItemChanged;
+
+    public event EventHandler<FocusEventArgs>? IsFocusedChanged;
+
 
 
 
@@ -210,12 +235,18 @@ public partial class SearchPicker : VerticalStackLayout
         nameof(HoverBackgroundColor), typeof(MauiColor), typeof(SearchPicker), ResourceProvider.GetColorOrNull("Gray200"), BindingMode.OneWay);
 
     public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
-        nameof(TextColor), typeof(MauiColor), typeof(SearchPicker), Colors.White, BindingMode.OneWay);
+        nameof(TextColor), typeof(MauiColor), typeof(SearchPicker),
+        DeviceInfo.Current.Platform == DevicePlatform.Android ? Colors.Black : Colors.White, BindingMode.OneWay);
 
     public static readonly BindableProperty SecondaryTextColorProperty = BindableProperty.Create(
         nameof(SecondaryTextColor), typeof(MauiColor), typeof(SearchPicker), ResourceProvider.GetColorOrNull("Gray500"), BindingMode.OneWay);
+
+    public static readonly BindableProperty DataItemTextColorProperty = BindableProperty.Create(
+        nameof(DataItemTextColor), typeof(MauiColor), typeof(SearchPicker), Colors.White, BindingMode.OneWay);
     
     public static readonly BindableProperty DropdownMaxHeightProperty = BindableProperty.Create(
         nameof(DropdownMaxHeight), typeof(double), typeof(SearchPicker), 200d, BindingMode.OneWay);
+
+
 
 }

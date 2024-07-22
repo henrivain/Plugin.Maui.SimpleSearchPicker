@@ -21,13 +21,12 @@
         <Entry x:Name="searchField"
                Focused="SetFocus"
                Unfocused="SetFocus"
-               Text="{Binding Source={x:Reference this}, Path=SearchWord}" 
+               Text="{Binding Source={x:Reference this}, Path=SearchWord}"
                TextColor="{Binding Source={x:Reference this}, Path=TextColor}" />
-        
     </Grid>
 
-    <AbsoluteLayout HeightRequest="1"
-                    Margin="0,2,0,0">
+    <AbsoluteLayout  HeightRequest="{OnPlatform Android={Binding Source={x:Reference menu}, Path=Height}, Default=1}"
+                     Margin="0,2,0,0">
         <Border Stroke="Transparent"
                 x:Name="menu"
                 StrokeThickness="0"
@@ -40,7 +39,7 @@
                 <VerticalStackLayout>
                     <Label Text="--select--"
                            Padding="4"
-                           TextColor="{Binding Source={x:Reference this}, Path=TextColor}">
+                           TextColor="{Binding Source={x:Reference this}, Path=DataItemTextColor}">
                         <Label.GestureRecognizers>
                             <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
                                                       PointerExited="DataItem_PointerExited" />
@@ -53,7 +52,7 @@
                             <DataTemplate x:DataType="{x:Type local:IStringPresentable}">
                                 <Label Text="{Binding VisibleData}"
                                        Padding="4"
-                                       TextColor="{Binding Source={x:Reference this}, Path=TextColor}"
+                                       TextColor="{Binding Source={x:Reference this}, Path=DataItemTextColor}"
                                        LineBreakMode="WordWrap">
                                     <Label.GestureRecognizers>
                                         <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
@@ -68,5 +67,6 @@
                 </VerticalStackLayout>
             </ScrollView>
         </Border>
+
     </AbsoluteLayout>
 </VerticalStackLayout>

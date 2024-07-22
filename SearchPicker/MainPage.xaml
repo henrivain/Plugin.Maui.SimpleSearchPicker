@@ -6,7 +6,7 @@
              xmlns:ui="clr-namespace:MauiExtension.SimpleSearchPicker;assembly=MauiExtension.SimpleSearchPicker"
              x:Name="page">
 
-    <ScrollView>
+    <ScrollView x:Name="scrollView">
         <VerticalStackLayout Padding="30,0,30,300"
                              Spacing="25">
             <Image Source="dotnet_bot.png"
@@ -23,11 +23,11 @@
                    SemanticProperties.HeadingLevel="Level2"
                    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
-            <ui:SearchPicker x:Name="searchPicker" BackgroundColor="Red" TextColor="Yellow" SecondaryTextColor="Green" HoverBackgroundColor="Orange"
-                             
-                             DropdownMaxHeight="200"/>
+            <ui:SearchPicker x:Name="searchPicker"
+                             IsFocusedChanged="SearchPicker_Focused" />
 
-            <Button></Button>
+
+            <Button Text="This btn does nothing" Margin="0,0,0,200"></Button>
         </VerticalStackLayout>
     </ScrollView>
 
