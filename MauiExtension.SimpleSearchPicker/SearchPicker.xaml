@@ -22,7 +22,10 @@
                Focused="SetFocus"
                Unfocused="SetFocus"
                Text="{Binding Source={x:Reference this}, Path=SearchWord}"
-               TextColor="{Binding Source={x:Reference this}, Path=TextColor}" />
+               TextColor="{Binding Source={x:Reference this}, Path=TextColor}"
+               Loaded="SearchField_Loaded">
+            
+        </Entry>
     </Grid>
 
     <AbsoluteLayout  HeightRequest="{OnPlatform Android={Binding Source={x:Reference menu}, Path=Height}, Default=1}"
@@ -35,7 +38,7 @@
                 AbsoluteLayout.LayoutBounds="0,0,1,-1"
                 MaximumHeightRequest="{Binding Source={x:Reference this}, Path=DropdownMaxHeight}"
                 BackgroundColor="{Binding Source={x:Reference this}, Path=BackgroundColor}">
-            <ScrollView>
+            <ScrollView x:Name="dataScrollView">
                 <VerticalStackLayout>
                     <Label Text="--select--"
                            Padding="4"

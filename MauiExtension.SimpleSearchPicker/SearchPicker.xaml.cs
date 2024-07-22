@@ -1,3 +1,7 @@
+#if WINDOWS
+using Microsoft.UI.Xaml;
+using Windows.System;
+#endif
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using MauiColor = Microsoft.Maui.Graphics.Color;
@@ -21,7 +25,7 @@ public partial class SearchPicker : VerticalStackLayout
                 }
             }
         };
-        
+
         InitializeComponent();
         SetFocus(this, new FocusEventArgs(this, IsFocused));
         BindableLayout.SetItemsSource(bindingStack, VisibleItems);
@@ -98,7 +102,7 @@ public partial class SearchPicker : VerticalStackLayout
         {
             _searchWord = value;
             // Filter is run in PropertyChanged in ctor
-            OnPropertyChanged();    
+            OnPropertyChanged();
         }
     }
 
@@ -118,7 +122,7 @@ public partial class SearchPicker : VerticalStackLayout
         {
             return;
         }
-       
+
         VisibleItems.Clear();
         if (string.IsNullOrWhiteSpace(SearchWord))
         {
@@ -243,10 +247,59 @@ public partial class SearchPicker : VerticalStackLayout
 
     public static readonly BindableProperty DataItemTextColorProperty = BindableProperty.Create(
         nameof(DataItemTextColor), typeof(MauiColor), typeof(SearchPicker), Colors.White, BindingMode.OneWay);
-    
+
     public static readonly BindableProperty DropdownMaxHeightProperty = BindableProperty.Create(
         nameof(DropdownMaxHeight), typeof(double), typeof(SearchPicker), 200d, BindingMode.OneWay);
 
 
 
+
+
+
+    private void SearchField_Loaded(object sender, EventArgs e)
+    {
+#if WINDOWS
+        if (sender is Entry entry)
+        {
+            if (entry.Handler?.PlatformView is UIElement native)
+            {
+                KeyEventHandler handler = new(bindingStack, Colors.Transparent, HoverBackgroundColor);
+
+                native.KeyDown += async (sender, e) =>
+                {
+                    e.Handled = true;
+                    double scrollYCoord;
+                    switch (e.Key)
+                    {
+                        case VirtualKey.Down:
+                            handler.HighLightValueBelow(out scrollYCoord);
+                            await dataScrollView.ScrollToAsync(0, scrollYCoord, true);
+                            break;
+
+                        case VirtualKey.Up:
+                            handler.HighLightValueOnTop(out scrollYCoord);
+                            break;
+                       
+                        case VirtualKey.Escape:
+                            handler.UnhighLightAll();
+                            SetFocus(this, new(this, false));
+                            e.Handled = false;
+                            return;
+
+                        case VirtualKey.Enter:
+                            handler.HandleSelected(DataItem_Tapped);
+                            return;
+                        default:
+                            e.Handled = false;
+                            return;
+                    }
+                    if (scrollYCoord >= 0)
+                    {
+                        await dataScrollView.ScrollToAsync(0, scrollYCoord, true);
+                    }
+                };
+            }
+        }
+#endif
+    }
 }
