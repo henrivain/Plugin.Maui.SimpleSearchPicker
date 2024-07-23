@@ -4,10 +4,8 @@ using Windows.System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using MauiColor = Microsoft.Maui.Graphics.Color;
-using System.Runtime.Remoting;
-using Microsoft.Maui.Controls;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 
 public partial class SearchPicker : VerticalStackLayout
 {

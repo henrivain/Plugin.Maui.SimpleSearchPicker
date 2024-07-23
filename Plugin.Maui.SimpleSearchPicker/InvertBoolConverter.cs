@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 
 internal class InvertBoolConverter : IValueConverter
 {

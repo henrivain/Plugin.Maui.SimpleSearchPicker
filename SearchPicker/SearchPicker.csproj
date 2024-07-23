@@ -63,7 +63,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MauiExtension.SimpleSearchPicker\MauiExtension.SimpleSearchPicker.csproj" />
+	  <ProjectReference Include="..\Plugin.Maui.SimpleSearchPicker\Plugin.Maui.SimpleSearchPicker.csproj" />
 	</ItemGroup>
+
+
 
 </Project>

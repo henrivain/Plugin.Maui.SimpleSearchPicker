@@ -1,4 +1,4 @@
-﻿namespace MauiExtension.SimpleSearchPicker;
+﻿namespace Plugin.Maui.SimpleSearchPicker;
 internal class CooldownTimer
 {
     public CooldownTimer() { }

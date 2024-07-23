@@ -1,4 +1,6 @@
-﻿using MauiExtension.SimpleSearchPicker;
+﻿
+
+using Plugin.Maui.SimpleSearchPicker;
 
 namespace SearchPicker;
 
@@ -29,7 +31,7 @@ public partial class MainPage : ContentPage
         BindingContext = new Context();
         //searchPicker.ItemsSource = _items;
         //searchPicker.SelectedItem = _items[0];
-        MauiExtension.SimpleSearchPicker.SearchPicker.SubscribeScrollToWhenFocusedAndroid(searchPicker, scrollView);
+        Plugin.Maui.SimpleSearchPicker.SearchPicker.SubscribeScrollToWhenFocusedAndroid(searchPicker, scrollView);
 
     }
 
@@ -37,7 +39,7 @@ public partial class MainPage : ContentPage
     {
         if (sender is View view)
         {
-            MauiExtension.SimpleSearchPicker.SearchPicker.SubscribeDataTemplateUserAccess(searchPicker, view);
+            Plugin.Maui.SimpleSearchPicker.SearchPicker.SubscribeDataTemplateUserAccess(searchPicker, view);
         }
     }
 

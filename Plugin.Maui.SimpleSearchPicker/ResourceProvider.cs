@@ -1,6 +1,6 @@
 ﻿using MauiColor = Microsoft.Maui.Graphics.Color;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 
 internal class ResourceProvider
 {

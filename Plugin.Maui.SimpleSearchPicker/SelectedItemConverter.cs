@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 internal class SelectedItemConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

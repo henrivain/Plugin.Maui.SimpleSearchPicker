@@ -1,7 +1,7 @@
 ﻿#if WINDOWS
 using MauiColor = Microsoft.Maui.Graphics.Color;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 
 class KeyEventHandler(VerticalStackLayout layout, MauiColor backgroundColor, MauiColor hoverBackgroundColor)
 {

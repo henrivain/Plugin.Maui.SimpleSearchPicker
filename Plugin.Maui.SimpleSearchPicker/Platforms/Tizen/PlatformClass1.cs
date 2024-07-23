@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MauiExtension.SimpleSearchPicker;
+namespace Plugin.Maui.SimpleSearchPicker;
 // All the code in this file is only included on Tizen.
 public class PlatformClass1
 {

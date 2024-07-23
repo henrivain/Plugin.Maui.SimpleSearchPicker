@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <VerticalStackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                     x:Class="MauiExtension.SimpleSearchPicker.SearchPicker"
-                     xmlns:local="clr-namespace:MauiExtension.SimpleSearchPicker"
+                     x:Class="Plugin.Maui.SimpleSearchPicker.SearchPicker"
+                     xmlns:local="clr-namespace:Plugin.Maui.SimpleSearchPicker"
                      ZIndex="2"
                      x:Name="this"
                      Unfocused="SetFocus"

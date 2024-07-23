@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SearchPicker.MainPage"
              xmlns:local="clr-namespace:SearchPicker"
-             xmlns:ui="clr-namespace:MauiExtension.SimpleSearchPicker;assembly=MauiExtension.SimpleSearchPicker"
+             xmlns:ui="clr-namespace:Plugin.Maui.SimpleSearchPicker;assembly=Plugin.Maui.SimpleSearchPicker"
              x:Name="page"
              x:DataType="{x:Type local:Context}"
              >
