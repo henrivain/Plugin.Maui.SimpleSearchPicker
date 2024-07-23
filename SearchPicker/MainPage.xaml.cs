@@ -29,8 +29,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
 
         BindingContext = new Context();
-        //searchPicker.ItemsSource = _items;
-        //searchPicker.SelectedItem = _items[0];
         Plugin.Maui.SimpleSearchPicker.SearchPicker.SubscribeScrollToWhenFocusedAndroid(searchPicker, scrollView);
 
     }
@@ -39,6 +37,8 @@ public partial class MainPage : ContentPage
     {
         if (sender is View view)
         {
+            // Add this to your custom data template view loaded event
+            // This enables user interaction with you data template
             Plugin.Maui.SimpleSearchPicker.SearchPicker.SubscribeDataTemplateUserAccess(searchPicker, view);
         }
     }
