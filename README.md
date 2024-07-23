@@ -56,3 +56,8 @@ by [Henri Vainio](https://github.com/henrivain)
     </ui:SearchPicker.ItemTemplate>
 </ui:SearchPicker>
 ```
+
+### Multiplatform
+Notice that currently only Windows and Android checked to work   
+![image](https://github.com/user-attachments/assets/087fb6b2-381e-4122-818c-e90bf1db70c0)
+
