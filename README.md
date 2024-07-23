@@ -1,4 +1,4 @@
-# MauiExtension.SimpleSearchPicker
+# Plugin.Maui.SimpleSearchPicker
 
 by [Henri Vainio](https://github.com/henrivain)
 
@@ -19,7 +19,7 @@ by [Henri Vainio](https://github.com/henrivain)
 
 ```xaml
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns:ui="clr-namespace:MauiExtension.SimpleSearchPicker;assembly=MauiExtension.SimpleSearchPicker"
+<ContentPage xmlns:ui="clr-namespace:Plugin.Maui.SimpleSearchPicker;assembly=Plugin.Maui.SimpleSearchPicker"
     ... >
       <VerticalStackLayout Padding="30,0,30,300"
                            Spacing="25">
