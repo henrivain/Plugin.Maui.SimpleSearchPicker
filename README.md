@@ -1,3 +1,5 @@
+[![Deploy to NuGet](https://github.com/henrivain/Plugin.Maui.SimpleSearchPicker/actions/workflows/generate_nuget.yml/badge.svg)](https://github.com/henrivain/Plugin.Maui.SimpleSearchPicker/actions/workflows/generate_nuget.yml)
+
 # Plugin.Maui.SimpleSearchPicker
 
 by [Henri Vainio](https://github.com/henrivain)
