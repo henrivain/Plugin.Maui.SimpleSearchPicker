@@ -169,20 +169,33 @@ public partial class SearchPicker : VerticalStackLayout
         Filter();   // Refilters to be sure with user input
     }
 
-    public static void SubscribeDataTemplateUserAccess(SearchPicker parent, View dataTemplateView)
+    public static void SubscribeScrollToWhenFocusedAndroid(SearchPicker picker, ScrollView parent)
+    {
+#if ANDROID
+        picker.IsFocusedChanged += (sender, e) =>
+        {
+            if (e.IsFocused)
+            {
+                parent.ScrollToAsync(0, picker.Y, false);
+            }
+        };
+#endif
+    }
+
+    public static void SubscribeDataTemplateUserAccess(SearchPicker picker, View pickerTemplateChild)
     {
         PointerGestureRecognizer pointerRecognizer = new();
-        pointerRecognizer.PointerEntered += parent.DataItem_PointerEntered;
-        pointerRecognizer.PointerExited += parent.DataItem_PointerExited;
+        pointerRecognizer.PointerEntered += picker.DataItem_PointerEntered;
+        pointerRecognizer.PointerExited += picker.DataItem_PointerExited;
 
         TapGestureRecognizer tapGestureRecognizer = new()
         {
-            CommandParameter = dataTemplateView.BindingContext
+            CommandParameter = pickerTemplateChild.BindingContext
         };
-        tapGestureRecognizer.Tapped += parent.DataItem_Tapped;
+        tapGestureRecognizer.Tapped += picker.DataItem_Tapped;
 
-        dataTemplateView.GestureRecognizers.Add(pointerRecognizer);
-        dataTemplateView.GestureRecognizers.Add(tapGestureRecognizer);
+        pickerTemplateChild.GestureRecognizers.Add(pointerRecognizer);
+        pickerTemplateChild.GestureRecognizers.Add(tapGestureRecognizer);
     }
 
 
@@ -210,17 +223,17 @@ public partial class SearchPicker : VerticalStackLayout
 
     private void DataItem_PointerEntered(object? sender, PointerEventArgs e)
     {
-        if (sender is Label label)
+        if (sender is View view)
         {
-            label.BackgroundColor = HoverBackgroundColor;
+            view.BackgroundColor = HoverBackgroundColor;
         }
     }
 
     private void DataItem_PointerExited(object? sender, PointerEventArgs e)
     {
-        if (sender is Label label)
+        if (sender is View view)
         {
-            label.BackgroundColor = Colors.Transparent;
+            view.BackgroundColor = Colors.Transparent;
         }
     }
 

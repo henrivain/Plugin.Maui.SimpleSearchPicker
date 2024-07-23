@@ -4,10 +4,13 @@
              x:Class="SearchPicker.MainPage"
              xmlns:local="clr-namespace:SearchPicker"
              xmlns:ui="clr-namespace:MauiExtension.SimpleSearchPicker;assembly=MauiExtension.SimpleSearchPicker"
-             x:Name="page">
+             x:Name="page"
+             x:DataType="{x:Type local:Context}"
+             BackgroundColor="{StaticResource Gray500}"
+             >
 
     <ScrollView x:Name="scrollView">
-        <VerticalStackLayout Padding="30,0,30,300"
+        <VerticalStackLayout Padding="30,0,30,800"
                              Spacing="25">
             <Image Source="dotnet_bot.png"
                    HeightRequest="185"
@@ -24,17 +27,23 @@
                    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
             <ui:SearchPicker x:Name="searchPicker"
-                             IsFocusedChanged="SearchPicker_Focused"
-                             >
-                <ui:SearchPicker.ItemTemplate>
+                             MaximumWidthRequest="200"
+                             ItemsSource="{Binding Data}"
+                             SelectedItem="{Binding SelectedData}"
+                             SelectedItemChanged="SelectedItemChanged">
+                <!--<ui:SearchPicker.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type ui:IStringPresentable}">
-                        <Label Text="gg" Loaded="Label_Loaded"></Label>
+                        <VerticalStackLayout Loaded="Label_Loaded" Padding="4">
+                            <Label Text="This data includes:" />
+                            <Label Text="{Binding VisibleData}" />
+                        </VerticalStackLayout>
                     </DataTemplate>
-                </ui:SearchPicker.ItemTemplate>
+                </ui:SearchPicker.ItemTemplate>-->
             </ui:SearchPicker>
 
 
-            <Button Text="This btn does nothing" Margin="0,0,0,200"></Button>
+
+
         </VerticalStackLayout>
     </ScrollView>
 
