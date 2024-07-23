@@ -1,10 +1,11 @@
 #if WINDOWS
-using Microsoft.UI.Xaml;
 using Windows.System;
 #endif
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using MauiColor = Microsoft.Maui.Graphics.Color;
+using System.Runtime.Remoting;
+using Microsoft.Maui.Controls;
 
 namespace MauiExtension.SimpleSearchPicker;
 
@@ -95,6 +96,12 @@ public partial class SearchPicker : VerticalStackLayout
         set => SetValue(DropdownMaxHeightProperty, value);
     }
 
+    public DataTemplate ItemTemplate
+    {
+        get => (DataTemplate)GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
     public string SearchWord
     {
         get => _searchWord;
@@ -162,6 +169,22 @@ public partial class SearchPicker : VerticalStackLayout
         Filter();   // Refilters to be sure with user input
     }
 
+    public static void SubscribeDataTemplateUserAccess(SearchPicker parent, View dataTemplateView)
+    {
+        PointerGestureRecognizer pointerRecognizer = new();
+        pointerRecognizer.PointerEntered += parent.DataItem_PointerEntered;
+        pointerRecognizer.PointerExited += parent.DataItem_PointerExited;
+
+        TapGestureRecognizer tapGestureRecognizer = new()
+        {
+            CommandParameter = dataTemplateView.BindingContext
+        };
+        tapGestureRecognizer.Tapped += parent.DataItem_Tapped;
+
+        dataTemplateView.GestureRecognizers.Add(pointerRecognizer);
+        dataTemplateView.GestureRecognizers.Add(tapGestureRecognizer);
+    }
+
 
     private void SetFocus(object? sender, FocusEventArgs e)
     {
@@ -185,7 +208,7 @@ public partial class SearchPicker : VerticalStackLayout
         IsFocusedChanged?.Invoke(this, e);
     }
 
-    private void DataItem_PointerEntered(object sender, PointerEventArgs e)
+    private void DataItem_PointerEntered(object? sender, PointerEventArgs e)
     {
         if (sender is Label label)
         {
@@ -193,7 +216,7 @@ public partial class SearchPicker : VerticalStackLayout
         }
     }
 
-    private void DataItem_PointerExited(object sender, PointerEventArgs e)
+    private void DataItem_PointerExited(object? sender, PointerEventArgs e)
     {
         if (sender is Label label)
         {
@@ -201,9 +224,7 @@ public partial class SearchPicker : VerticalStackLayout
         }
     }
 
-
-
-    private void DataItem_Tapped(object sender, TappedEventArgs e)
+    private void DataItem_Tapped(object? sender, TappedEventArgs e)
     {
         if (e.Parameter is null or IStringPresentable)
         {
@@ -219,8 +240,6 @@ public partial class SearchPicker : VerticalStackLayout
     public event EventHandler<IStringPresentable?>? SelectedItemChanged;
 
     public event EventHandler<FocusEventArgs>? IsFocusedChanged;
-
-
 
 
     public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(
@@ -251,17 +270,15 @@ public partial class SearchPicker : VerticalStackLayout
     public static readonly BindableProperty DropdownMaxHeightProperty = BindableProperty.Create(
         nameof(DropdownMaxHeight), typeof(double), typeof(SearchPicker), 200d, BindingMode.OneWay);
 
-
-
-
-
+    public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(
+        nameof(ItemTemplate), typeof(DataTemplate), typeof(SearchPicker), null, BindingMode.OneWay);
 
     private void SearchField_Loaded(object sender, EventArgs e)
     {
 #if WINDOWS
         if (sender is Entry entry)
         {
-            if (entry.Handler?.PlatformView is UIElement native)
+            if (entry.Handler?.PlatformView is Microsoft.UI.Xaml.UIElement native)
             {
                 KeyEventHandler handler = new(bindingStack, Colors.Transparent, HoverBackgroundColor);
 
@@ -279,7 +296,7 @@ public partial class SearchPicker : VerticalStackLayout
                         case VirtualKey.Up:
                             handler.HighLightValueOnTop(out scrollYCoord);
                             break;
-                       
+
                         case VirtualKey.Escape:
                             handler.UnhighLightAll();
                             SetFocus(this, new(this, false));

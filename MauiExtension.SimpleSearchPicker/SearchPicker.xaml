@@ -10,7 +10,23 @@
     <VerticalStackLayout.Resources>
         <local:InvertBoolConverter x:Key="invertBoolConverter" />
         <local:SelectedItemConverter x:Key="selectedItemConverter" />
+        <DataTemplate x:Key="defaultTemplate"
+                      x:DataType="{x:Type local:IStringPresentable}">
+            <Label Text="{Binding VisibleData}"
+                   Padding="4"
+                   TextColor="{Binding Source={x:Reference this}, Path=DataItemTextColor}"
+                   LineBreakMode="WordWrap">
+                <Label.GestureRecognizers>
+                    <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
+                                              PointerExited="DataItem_PointerExited" />
+                    <TapGestureRecognizer Tapped="DataItem_Tapped"
+                                          CommandParameter="{Binding .}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </DataTemplate>
     </VerticalStackLayout.Resources>
+    
+    
     <Grid>
         <Label IsVisible="{Binding Source={x:Reference this}, Path=IsFocused, Converter={StaticResource invertBoolConverter}}"
                Text="{Binding Source={x:Reference this}, Path=SelectedItem, Converter={StaticResource selectedItemConverter}}"
@@ -24,7 +40,7 @@
                Text="{Binding Source={x:Reference this}, Path=SearchWord}"
                TextColor="{Binding Source={x:Reference this}, Path=TextColor}"
                Loaded="SearchField_Loaded">
-            
+
         </Entry>
     </Grid>
 
@@ -50,23 +66,8 @@
                                                   CommandParameter="{x:Null}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <VerticalStackLayout x:Name="bindingStack">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="{x:Type local:IStringPresentable}">
-                                <Label Text="{Binding VisibleData}"
-                                       Padding="4"
-                                       TextColor="{Binding Source={x:Reference this}, Path=DataItemTextColor}"
-                                       LineBreakMode="WordWrap">
-                                    <Label.GestureRecognizers>
-                                        <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
-                                                                  PointerExited="DataItem_PointerExited" />
-                                        <TapGestureRecognizer Tapped="DataItem_Tapped"
-                                                              CommandParameter="{Binding .}" />
-                                    </Label.GestureRecognizers>
-                                </Label>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </VerticalStackLayout>
+                    <VerticalStackLayout x:Name="bindingStack"
+                                         BindableLayout.ItemTemplate="{Binding Source={x:Reference this}, Path=ItemTemplate, TargetNullValue={StaticResource defaultTemplate}}" />
                 </VerticalStackLayout>
             </ScrollView>
         </Border>

@@ -24,7 +24,14 @@
                    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
             <ui:SearchPicker x:Name="searchPicker"
-                             IsFocusedChanged="SearchPicker_Focused" />
+                             IsFocusedChanged="SearchPicker_Focused"
+                             >
+                <ui:SearchPicker.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type ui:IStringPresentable}">
+                        <Label Text="gg" Loaded="Label_Loaded"></Label>
+                    </DataTemplate>
+                </ui:SearchPicker.ItemTemplate>
+            </ui:SearchPicker>
 
 
             <Button Text="This btn does nothing" Margin="0,0,0,200"></Button>

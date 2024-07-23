@@ -27,6 +27,14 @@ public partial class MainPage : ContentPage
 #endif
     }
 
+    private void Label_Loaded(object sender, EventArgs e)
+    {
+        if (sender is Label label)
+        {
+            MauiExtension.SimpleSearchPicker.SearchPicker.SubscribeDataTemplateUserAccess(searchPicker, label);
+        }
+    }
+
     public record StringRepresentable(string VisibleData) : IStringPresentable;
 
 
