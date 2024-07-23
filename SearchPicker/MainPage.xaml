@@ -6,7 +6,6 @@
              xmlns:ui="clr-namespace:MauiExtension.SimpleSearchPicker;assembly=MauiExtension.SimpleSearchPicker"
              x:Name="page"
              x:DataType="{x:Type local:Context}"
-             BackgroundColor="{StaticResource Gray500}"
              >
 
     <ScrollView x:Name="scrollView">

@@ -32,7 +32,7 @@
 		<Description>Simple search picker for .NET MAUI.</Description>
 		<PackageProjectUrl></PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/henrivain</RepositoryUrl>
+		<RepositoryUrl>https://github.com/henrivain/MauiExtension.SimpleSearchPicker</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>picker;searchpicker;maui</PackageTags>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
