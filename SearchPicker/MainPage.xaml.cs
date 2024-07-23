@@ -33,11 +33,6 @@ public partial class MainPage : ContentPage
 
     }
 
-    internal readonly StringRepresentable[] _items = [new("Value 1"), new("Value 2"), new("Value 3"), new("Value 4"), new("Value 5"),
-        new("Value 6"), new("Value 7"), new("Value 8"), new("Value 11"), new("Value 12")];
-
-   
-
     private void Label_Loaded(object sender, EventArgs e)
     {
         if (sender is View view)
@@ -45,7 +40,6 @@ public partial class MainPage : ContentPage
             MauiExtension.SimpleSearchPicker.SearchPicker.SubscribeDataTemplateUserAccess(searchPicker, view);
         }
     }
-
 
     private void SelectedItemChanged(object sender, IStringPresentable e)
     {
