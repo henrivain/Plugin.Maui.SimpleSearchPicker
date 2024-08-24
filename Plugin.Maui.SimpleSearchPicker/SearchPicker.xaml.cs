@@ -31,7 +31,6 @@ public partial class SearchPicker : VerticalStackLayout
     }
 
 
-
     public IEnumerable<IStringPresentable>? ItemsSource
     {
         get => (IEnumerable<IStringPresentable>?)GetValue(ItemsSourceProperty);
@@ -42,10 +41,20 @@ public partial class SearchPicker : VerticalStackLayout
         }
     }
 
+
+    /* Seems that two way binding invokes property changed only when initializing object.
+     * SelectedItem with PropertyChanged can only be called from within this class.
+     * If you want to change SelectedItem programmatically, use SelectItemProgrammatically(IStringPresentable?) method.
+     * Kinda annoying that property cannot be called directly, but it is what it is. 
+     */
     public IStringPresentable? SelectedItem
     {
         get => (IStringPresentable?)GetValue(SelectedItemProperty);
-        set => SetValue(SelectedItemProperty, value);
+        set
+        {
+            SetValue(SelectedItemProperty, value);
+            SelectedItemChanged?.Invoke(this, SelectedItem);
+        }
     }
 
     public int MaxVisibleItemCount { get; set; } = 30;  // -1 means not limited 
@@ -112,6 +121,7 @@ public partial class SearchPicker : VerticalStackLayout
     }
 
 
+    public void SelectItemProgrammatically(IStringPresentable? item) => SelectedItem = item;
 
     public void Filter()
     {
@@ -260,14 +270,14 @@ public partial class SearchPicker : VerticalStackLayout
     {
         if (e.Parameter is null or IStringPresentable)
         {
-            SelectedItem = (IStringPresentable?)e.Parameter;
             // If Unfocus is called on Android, SetFocus is not called
+            SelectedItem = (IStringPresentable?)e.Parameter;
             SetFocus(this, new(this, false));
-            SelectedItemChanged?.Invoke(this, SelectedItem);
             return;
         }
         throw new UnreachableException("Mismatched data type, this exception should never be thrown.");
     }
+
 
     public event EventHandler<IStringPresentable?>? SelectedItemChanged;
 
