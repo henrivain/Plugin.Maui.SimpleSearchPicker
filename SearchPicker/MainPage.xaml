@@ -41,6 +41,8 @@
             </ui:SearchPicker>
 
 
+            <Button Text="Add New"
+                    Clicked="Button_Clicked" />
 
 
         </VerticalStackLayout>

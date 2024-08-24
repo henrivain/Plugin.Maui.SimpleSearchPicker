@@ -42,11 +42,6 @@ public partial class SearchPicker : VerticalStackLayout
     }
 
 
-    /* Seems that two way binding invokes property changed only when initializing object.
-     * SelectedItem with PropertyChanged can only be called from within this class.
-     * If you want to change SelectedItem programmatically, use SelectItemProgrammatically(IStringPresentable?) method.
-     * Kinda annoying that property cannot be called directly, but it is what it is. 
-     */
     public IStringPresentable? SelectedItem
     {
         get => (IStringPresentable?)GetValue(SelectedItemProperty);
@@ -119,9 +114,6 @@ public partial class SearchPicker : VerticalStackLayout
             OnPropertyChanged();
         }
     }
-
-
-    public void SelectItemProgrammatically(IStringPresentable? item) => SelectedItem = item;
 
     public void Filter()
     {

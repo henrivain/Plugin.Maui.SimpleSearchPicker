@@ -1,23 +1,44 @@
 ﻿
 
 using Plugin.Maui.SimpleSearchPicker;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace SearchPicker;
 
 public record StringRepresentable(string VisibleData) : IStringPresentable;
 
-public class Context
+public class Context : INotifyPropertyChanged
 {
+    private IStringPresentable _selectedData;
+
     public Context()
     {
         Data = [new("Value 1"), new("Value 2"), new("Value 3"), new("Value 4"), new("Value 5"),
         new("Value 6"), new("Value 7"), new("Value 8"), new("Value 11"), new("Value 12")];
-        SelectedData = Data[0];
+        _selectedData = Data[0];
     }
 
 
-    public IStringPresentable SelectedData { get; set; } 
-    public StringRepresentable[] Data { get; } 
+    public IStringPresentable SelectedData
+    { 
+        get => _selectedData;
+        set
+        {
+            _selectedData = value;
+            OnPropertyChanged(nameof(SelectedData));
+        }
+    }
+    public List<StringRepresentable> Data { get; }
+
+
+
+    private void OnPropertyChanged([CallerMemberName]string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
 
 public partial class MainPage : ContentPage
@@ -46,6 +67,16 @@ public partial class MainPage : ContentPage
     private void SelectedItemChanged(object sender, IStringPresentable e)
     {
 
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        var context = (Context)BindingContext;
+
+        StringRepresentable data = new($"New Value {Random.Shared.Next(20)}");
+
+        context.SelectedData = data;
+        context.Data.Add(data);
     }
 }
 
