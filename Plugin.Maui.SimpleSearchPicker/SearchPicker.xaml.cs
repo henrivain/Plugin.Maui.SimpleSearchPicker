@@ -26,7 +26,7 @@ public partial class SearchPicker : VerticalStackLayout
         };
 
         InitializeComponent();
-        SetFocus(this, new FocusEventArgs(this, IsFocused));
+        SetFocus(new FocusEventArgs(this, IsFocused), false);
         BindableLayout.SetItemsSource(bindingStack, VisibleItems);
     }
 
@@ -196,27 +196,48 @@ public partial class SearchPicker : VerticalStackLayout
         pickerTemplateChild.GestureRecognizers.Add(tapGestureRecognizer);
     }
 
+    private void SetFocus(object sender, FocusEventArgs e) => SetFocus(e);
 
-    private void SetFocus(object? sender, FocusEventArgs e)
+    private void SetFocus(FocusEventArgs e, bool animate = true)
     {
         ArgumentNullException.ThrowIfNull(e);
         IsFocused = e.IsFocused;
 
-        if (e.IsFocused)
+        if (IsFocused)
         {
             Filter();
-            new Animation(value => { menu.MaximumHeightRequest = value; }, 0, DropdownMaxHeight)
-                .Commit(menu, "menuOpening", length: 200, easing: Easing.CubicIn);
+            OpenMenu(animate);
         }
         else
         {
+            CloseMenu(animate);
             searchField.Unfocus();
             SearchWord = string.Empty;
-            new Animation(value => { menu.MaximumHeightRequest = value; }, DropdownMaxHeight, 0)
-                .Commit(menu, "menuClosing", length: 200, easing: Easing.CubicIn);
+        }
+        IsFocusedChanged?.Invoke(this, e);
+
+
+        void OpenMenu(bool animate)
+        {
+            if (animate)
+            {
+                new Animation(value => { menu.MaximumHeightRequest = value; }, 0, DropdownMaxHeight)
+                    .Commit(menu, "menuOpening", length: 200, easing: Easing.CubicIn);
+                return;
+            }
+            menu.MaximumHeightRequest = DropdownMaxHeight;
         }
 
-        IsFocusedChanged?.Invoke(this, e);
+        void CloseMenu(bool animate)
+        {
+            if (animate)
+            {
+                new Animation(value => { menu.MaximumHeightRequest = value; }, DropdownMaxHeight, 0)
+                    .Commit(menu, "menuClosing", length: 200, easing: Easing.CubicIn);
+                return;
+            }
+            menu.MaximumHeightRequest = 0;
+        }
     }
 
     private void DataItem_PointerEntered(object? sender, PointerEventArgs e)
@@ -330,4 +351,6 @@ public partial class SearchPicker : VerticalStackLayout
         }
 #endif
     }
+
+
 }
