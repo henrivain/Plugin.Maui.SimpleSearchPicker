@@ -1,23 +1,31 @@
 ﻿using System.Globalization;
 
 namespace Plugin.Maui.SimpleSearchPicker;
-internal class SelectedItemConverter : IValueConverter
+internal class SelectedItemConverter : IMultiValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is null)
+        string? placeholder = null;
+        foreach (var value in values)
         {
-            return "search term";
+            if (value is IStringPresentable presentable)
+            {
+                return presentable.VisibleData;
+            }
+            if (value is string str)
+            {
+                return str;
+            }
+            if (value is PlaceholderString placeholderObj)
+            {
+                placeholder = placeholderObj.Value;
+            }
         }
-        if (value is IStringPresentable presentable)
-        {
-            return presentable.VisibleData;
-        }
-        throw new NotImplementedException();
+        return placeholder ?? "search term";
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        throw new NotSupportedException();
+        throw new NotImplementedException();
     }
 }

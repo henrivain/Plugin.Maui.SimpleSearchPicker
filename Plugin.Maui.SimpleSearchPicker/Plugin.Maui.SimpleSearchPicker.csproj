@@ -25,7 +25,7 @@
 
 	<!-- Package properties -->
 	<PropertyGroup>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Title>Simple Search Picker</Title>
 		<PackageId>Plugin.Maui.SimpleSearchPicker</PackageId>
 		<Authors>henrivain</Authors>

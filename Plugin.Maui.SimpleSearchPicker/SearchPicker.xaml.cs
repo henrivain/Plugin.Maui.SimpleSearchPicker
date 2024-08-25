@@ -52,6 +52,9 @@ public partial class SearchPicker : VerticalStackLayout
         }
     }
 
+    /// <summary>
+    /// Maximum count of items that are loaded into drop down at once. 
+    /// </summary>
     public int MaxVisibleItemCount { get; set; } = 30;  // -1 means not limited 
 
     ObservableCollection<IStringPresentable> VisibleItems { get; } = [];
@@ -74,18 +77,27 @@ public partial class SearchPicker : VerticalStackLayout
         set => SetValue(HoverBackgroundColorProperty, value);
     }
 
+    /// <summary>
+    /// Search field text color.
+    /// </summary>
     public MauiColor TextColor
     {
         get => (MauiColor)GetValue(TextColorProperty);
         set => SetValue(TextColorProperty, value);
     }
 
+    /// <summary>
+    /// Color used for text when inside dropdown.
+    /// </summary>
     public MauiColor DataItemTextColor
     {
         get => (MauiColor)GetValue(DataItemTextColorProperty);
         set => SetValue(DataItemTextColorProperty, value);
     }
 
+    /// <summary>
+    /// Color used for text when <see cref="SearchPicker"/> is unfocused.
+    /// </summary>
     public MauiColor SecondaryTextColor
     {
         get => (MauiColor)GetValue(SecondaryTextColorProperty);
@@ -113,6 +125,35 @@ public partial class SearchPicker : VerticalStackLayout
             // Filter is run in PropertyChanged in ctor
             OnPropertyChanged();
         }
+    }
+
+    /// <summary>
+    /// Text that is shown when <see cref="SearchPicker"/> is unfocused and has <see langword="null"/> as <see cref="SelectedItem"/>.
+    /// </summary>
+    public PlaceholderString Placeholder
+    {
+        get => (PlaceholderString)GetValue(PlaceholderProperty);
+        set => SetValue(PlaceholderProperty, value);
+    }
+
+
+    /// <summary>
+    /// String value that is shown as the top most item in the drop down. 
+    /// Selecting that item chooses <see langword="null"/> as <see cref="SelectedItem"/>.
+    /// </summary>
+    public string NullValueString
+    {
+        get => (string)GetValue(NullValueStringProperty);
+        set => SetValue(NullValueStringProperty, value);
+    }
+
+    /// <summary>
+    /// Is the top most item shown on the drop down. Set visible string for <see langword="null"/> value using <see cref="NullValueString"/>.
+    /// </summary>
+    public bool IsNullValueVisible
+    {
+        get => (bool)GetValue(IsNullValueVisibleProperty);
+        set => SetValue(IsNullValueVisibleProperty, value);
     }
 
     public void Filter()
@@ -306,6 +347,16 @@ public partial class SearchPicker : VerticalStackLayout
 
     public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(
         nameof(ItemTemplate), typeof(DataTemplate), typeof(SearchPicker), null, BindingMode.OneWay);
+    
+    public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
+        nameof(Placeholder), typeof(PlaceholderString), typeof(SearchPicker), new PlaceholderString("search term"), BindingMode.OneWay);
+    
+    public static readonly BindableProperty NullValueStringProperty = BindableProperty.Create(
+        nameof(NullValueString), typeof(string), typeof(SearchPicker), "--select--", BindingMode.OneWay);
+    
+    public static readonly BindableProperty IsNullValueVisibleProperty = BindableProperty.Create(
+        nameof(IsNullValueVisible), typeof(bool), typeof(SearchPicker), true, BindingMode.OneWay);
+
 
     private void SearchField_Loaded(object sender, EventArgs e)
     {

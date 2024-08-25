@@ -5,8 +5,7 @@
              xmlns:local="clr-namespace:SearchPicker"
              xmlns:ui="clr-namespace:Plugin.Maui.SimpleSearchPicker;assembly=Plugin.Maui.SimpleSearchPicker"
              x:Name="page"
-             x:DataType="{x:Type local:Context}"
-             >
+             x:DataType="{x:Type local:Context}">
 
     <ScrollView x:Name="scrollView">
         <VerticalStackLayout Padding="30,0,30,800"
@@ -29,7 +28,8 @@
                              MaximumWidthRequest="200"
                              ItemsSource="{Binding Data}"
                              SelectedItem="{Binding SelectedData}"
-                             SelectedItemChanged="SelectedItemChanged">
+                             SelectedItemChanged="SelectedItemChanged"
+                             >
                 <!--<ui:SearchPicker.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type ui:IStringPresentable}">
                         <VerticalStackLayout Loaded="Label_Loaded" Padding="4">

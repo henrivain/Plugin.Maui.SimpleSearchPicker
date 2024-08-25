@@ -25,15 +25,23 @@
             </Label>
         </DataTemplate>
     </VerticalStackLayout.Resources>
-    
-    
+
+
     <Grid>
         <Label IsVisible="{Binding Source={x:Reference this}, Path=IsFocused, Converter={StaticResource invertBoolConverter}}"
-               Text="{Binding Source={x:Reference this}, Path=SelectedItem, Converter={StaticResource selectedItemConverter}}"
                TextColor="{Binding Source={x:Reference this}, Path=SecondaryTextColor}"
                VerticalTextAlignment="Center"
                Padding="11,0,0,5"
-               InputTransparent="True" />
+               InputTransparent="True">
+            <Label.Text>
+                <MultiBinding Converter="{StaticResource selectedItemConverter}">
+                    <Binding Source="{x:Reference this}"
+                             Path="SelectedItem" />
+                    <Binding Source="{x:Reference this}"
+                             Path="Placeholder" />
+                </MultiBinding>
+            </Label.Text>
+        </Label>
         <Entry x:Name="searchField"
                Focused="SetFocus"
                Unfocused="SetFocus"
@@ -44,8 +52,8 @@
         </Entry>
     </Grid>
 
-    <AbsoluteLayout  HeightRequest="{OnPlatform Android={Binding Source={x:Reference menu}, Path=Height}, Default=1}"
-                     Margin="0,2,0,0">
+    <AbsoluteLayout HeightRequest="{OnPlatform Android={Binding Source={x:Reference menu}, Path=Height}, Default=1}"
+                    Margin="0,2,0,0">
         <Border Stroke="Transparent"
                 x:Name="menu"
                 StrokeThickness="0"
@@ -56,8 +64,9 @@
                 BackgroundColor="{Binding Source={x:Reference this}, Path=BackgroundColor}">
             <ScrollView x:Name="dataScrollView">
                 <VerticalStackLayout>
-                    <Label Text="--select--"
+                    <Label Text="{Binding Source={x:Reference this}, Path=NullValueString}"
                            Padding="4"
+                           IsVisible="{Binding Source={x:Reference this}, Path=IsNullValueVisible}"
                            TextColor="{Binding Source={x:Reference this}, Path=DataItemTextColor}">
                         <Label.GestureRecognizers>
                             <PointerGestureRecognizer PointerEntered="DataItem_PointerEntered"
